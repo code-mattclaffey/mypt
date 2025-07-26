@@ -88,9 +88,9 @@ Respond in JSON format:
     // Fallback to mock response if Bedrock fails
     const mockResponse = {
       summary: `Based on your recent activity, you're making progress toward your goal. Continue with consistent effort and healthy habits.\n\nRecommendations:\n• Maintain a balanced diet\n• Stay active with regular exercise\n• Monitor your progress weekly\n• Stay hydrated and get adequate sleep`,
-      newGoalWeight: body.goalWeight || 70,
-      recommendedCalories: Math.round(2000 - ((body.currentWeight || 70) - (body.goalWeight || 65)) * 50),
-      recommendedSteps: Math.min(12000, 8000 + Math.round(((body.currentWeight || 70) - (body.goalWeight || 65)) * 200))
+      newGoalWeight: 70,
+      recommendedCalories: 2000,
+      recommendedSteps: 10000
     };
     
     return NextResponse.json(mockResponse);
