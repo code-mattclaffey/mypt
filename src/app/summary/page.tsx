@@ -98,7 +98,7 @@ export default function AISummaryPage() {
         ([a], [b]) => new Date(b).getTime() - new Date(a).getTime()
       );
       const latestWeight =
-        sortedEntries.length > 0 ? sortedEntries[0][1].weight : 0;
+        sortedEntries.length > 0 ? (sortedEntries[0][1] as any).weight : 0;
       setCurrentWeight(latestWeight);
     }
   }, []);
