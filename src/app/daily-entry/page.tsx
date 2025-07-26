@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { format } from 'date-fns';
 import { UserProfile, DailyEntry } from '../types';
@@ -13,7 +13,7 @@ const getDailyTargets = (userProfile: UserProfile | null) => {
   return { calories: userProfile.targetCalories, steps: userProfile.targetSteps };
 };
 
-export default function DailyEntryPage() {
+function DailyEntryContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const dateParam = searchParams.get('date');
@@ -274,5 +274,13 @@ export default function DailyEntryPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function DailyEntryPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center"><div className="text-lg">Loading...</div></div>}>
+      <DailyEntryContent />
+    </Suspense>
   );
 }
