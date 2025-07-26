@@ -1,12 +1,16 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+};
+
 export const metadata: Metadata = {
   title: "MyPT.ai - AI Personal Trainer",
   description: "AI-powered health tracking with personalized fitness recommendations. Track your progress, get insights, and achieve your fitness goals.",
   keywords: "AI, fitness, health, personal trainer, weight loss, calorie tracking, step counter",
   authors: [{ name: "MyPT.ai" }],
-  viewport: "width=device-width, initial-scale=1",
   themeColor: "#3b82f6",
   manifest: "/manifest.json",
   icons: {
