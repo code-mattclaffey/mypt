@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
-import { DailyEntry } from '../types';
+import { DailyEntry, UserProfile } from '../types';
 
 // Add custom slider styles
 const sliderStyles = `
