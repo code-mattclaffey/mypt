@@ -17,17 +17,10 @@ export default function SignUpPage() {
   useEffect(() => {
     const savedProfile = localStorage.getItem('healthAssistant_profile');
     if (savedProfile) {
-      const profile = JSON.parse(savedProfile);
-      setFormData({
-        height: profile.height || 170,
-        sex: profile.sex || 'male',
-        weight: profile.weight || 70,
-        activityLevel: profile.activityLevel || 3,
-        goalWeight: profile.goalWeight || 65,
-        targetDate: profile.targetDate || ''
-      });
+      router.push('/dashboard');
+      return;
     }
-  }, []);
+  }, [router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -84,7 +77,12 @@ export default function SignUpPage() {
         <div className="bg-white/5 backdrop-blur-sm rounded-2xl shadow-lg border border-white/10">
           <div className="p-8">
             <div className="text-center mb-8">
-              <span className="text-5xl block mb-4">🔄</span>
+              <svg className="w-16 h-16 mx-auto mb-4" viewBox="0 0 32 32" fill="none">
+                <circle cx="16" cy="16" r="14" fill="#3b82f6" stroke="#1d4ed8" strokeWidth="2"/>
+                <path d="M12 8v16l8-8-8-8z" fill="white"/>
+                <circle cx="22" cy="10" r="3" fill="#10b981"/>
+                <circle cx="10" cy="22" r="3" fill="#f59e0b"/>
+              </svg>
               <h2 className="text-2xl font-bold text-slate-100 mb-2">Create Your Profile</h2>
               <p className="text-slate-300">Set up your health tracking preferences</p>
             </div>

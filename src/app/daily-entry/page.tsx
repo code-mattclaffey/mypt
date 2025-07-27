@@ -109,7 +109,12 @@ function DailyEntryContent() {
           <div className="p-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <span className="text-3xl">📝</span>
+                <svg className="w-8 h-8" viewBox="0 0 32 32" fill="none">
+                <circle cx="16" cy="16" r="14" fill="#3b82f6" stroke="#1d4ed8" strokeWidth="2"/>
+                <path d="M12 8v16l8-8-8-8z" fill="white"/>
+                <circle cx="22" cy="10" r="3" fill="#10b981"/>
+                <circle cx="10" cy="22" r="3" fill="#f59e0b"/>
+              </svg>
                 <h1 className="text-2xl font-bold text-slate-100">Daily Entry</h1>
               </div>
               <button 
