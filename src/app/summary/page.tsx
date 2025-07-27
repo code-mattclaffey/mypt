@@ -282,7 +282,7 @@ export default function AISummaryPage() {
                   AI Recommendations
                 </h2>
                 <div className="bg-gradient-to-r from-purple-500/20 to-cyan-500/20 border border-purple-500/30 rounded-lg p-4 mb-4">
-                  <p className="text-slate-200 whitespace-pre-wrap">{summary}</p>
+                  <p className="text-slate-200 leading-relaxed">{summary}</p>
                 </div>
                 {!hasError && (newGoal > userProfile.goalWeight ||
                   newTargetCalories !== (userProfile.targetCalories || 0) ||
