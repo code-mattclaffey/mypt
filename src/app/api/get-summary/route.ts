@@ -3,13 +3,11 @@ import {
   BedrockRuntimeClient,
   InvokeModelCommand,
 } from "@aws-sdk/client-bedrock-runtime";
+import { fromEnv } from "@aws-sdk/credential-provider-env";
 
 const client = new BedrockRuntimeClient({
   region: "eu-west-2",
-  credentials: {
-    accessKeyId: process.env.NEXT_ACCESS_KEY_ID!,
-    secretAccessKey: process.env.NEXT_SECRET_ACCESS_KEY!,
-  },
+  credentials: fromEnv(),
 });
 
 export async function POST(request: NextRequest) {
