@@ -1,6 +1,6 @@
-# MyPT.ai - AI Personal Trainer
+# HealthSync - AI Health Insights
 
-A Next.js health tracking application with AI-powered insights and personalized fitness recommendations.
+A Next.js health tracking application that syncs your health data with AI-powered insights and personalized recommendations.
 
 ## Features
 
@@ -49,3 +49,4 @@ This app is configured for AWS Amplify deployment with the included `amplify.yml
 - **AI Summary**: Personalized insights and goal adjustments
 - **Progress Cards**: Real-time goal tracking and statistics
 - **Mobile Navigation**: Responsive hamburger menu
+- **Data Sync Ready**: Built for MyFitnessPal and Withings integration

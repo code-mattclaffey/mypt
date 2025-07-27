@@ -7,20 +7,20 @@ export const viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "MyPT.ai - AI Personal Trainer",
-  description: "AI-powered health tracking with personalized fitness recommendations. Track your progress, get insights, and achieve your fitness goals.",
+  title: "HealthSync - AI Health Insights",
+  description: "Sync your health data with AI-powered insights. Track progress, get personalized recommendations, and achieve your wellness goals.",
   keywords: "AI, fitness, health, personal trainer, weight loss, calorie tracking, step counter",
   authors: [{ name: "MyPT.ai" }],
   themeColor: "#3b82f6",
   manifest: "/manifest.json",
   icons: {
-    icon: "/favicon.svg",
-    shortcut: "/favicon.svg",
-    apple: "/favicon.svg"
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/favicon.ico"
   },
   openGraph: {
-    title: "MyPT.ai - AI Personal Trainer",
-    description: "AI-powered health tracking with personalized fitness recommendations",
+    title: "HealthSync - AI Health Insights",
+    description: "Sync your health data with AI-powered insights and personalized recommendations",
     type: "website",
     locale: "en_US"
   }
@@ -34,7 +34,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/favicon.ico" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#3b82f6" />
       </head>

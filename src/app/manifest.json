@@ -1,7 +1,7 @@
 {
-  "name": "MyPT.ai - AI Personal Trainer",
-  "short_name": "MyPT.ai",
-  "description": "AI-powered health tracking with personalized fitness recommendations",
+  "name": "HealthSync - AI Health Insights",
+  "short_name": "HealthSync",
+  "description": "Sync your health data with AI-powered insights and personalized recommendations",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

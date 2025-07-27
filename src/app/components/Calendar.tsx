@@ -114,7 +114,7 @@ function MobileCalendar({ entries, onDateSelect, userProfile }: MobileCalendarPr
               </div>
               <button
                 onClick={() => onDateSelect(today)}
-                className="mt-3 w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
+                className="mt-3 w-full px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors font-medium"
               >
                 Edit Today's Entry
               </button>
@@ -122,7 +122,7 @@ function MobileCalendar({ entries, onDateSelect, userProfile }: MobileCalendarPr
           ) : (
             <button
               onClick={() => onDateSelect(today)}
-              className="w-full px-6 py-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-lg"
+              className="w-full px-6 py-4 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors font-medium text-lg"
             >
               Add Today's Entry
             </button>
@@ -130,7 +130,7 @@ function MobileCalendar({ entries, onDateSelect, userProfile }: MobileCalendarPr
           
           <button
             onClick={() => setShowPastEntries(true)}
-            className="w-full px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+            className="w-full px-6 py-3 border-2 border-black text-black rounded-lg hover:bg-gray-100 transition-colors font-medium"
           >
             View Past Entries ({pastEntries.length})
           </button>
@@ -265,7 +265,7 @@ export default function Calendar({ entries, onDateSelect, targetDate, userProfil
                     : 'text-gray-700 hover:bg-gray-50'
                   }
                   ${isToday(day) && !hasEntry(day)
-                    ? 'border-2 border-blue-500 text-blue-600 bg-blue-50 hover:bg-blue-100' 
+                    ? 'border-2 border-black text-black bg-gray-100 hover:bg-gray-200' 
                     : ''
                   }
                   ${dayStatus === 'green' && !isTargetDate(day)

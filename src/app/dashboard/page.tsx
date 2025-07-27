@@ -18,15 +18,20 @@ export default function Home() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const { userProfile, setUserProfile, entries, setEntries } = useHealthData();
 
-  // Dashboard page - no redirect needed since users come here intentionally
-
   useEffect(() => {
+    // Check if user has profile, redirect to home if they don't
+    const savedProfile = localStorage.getItem('healthAssistant_profile');
+    if (!savedProfile) {
+      router.push('/');
+      return;
+    }
+    setUserProfile(JSON.parse(savedProfile));
     const handleFocus = () => {
       const savedProfile = localStorage.getItem('healthAssistant_profile');
       if (savedProfile) {
         setUserProfile(JSON.parse(savedProfile));
       } else {
-        router.push('/sign-up');
+        router.push('/');
       }
     };
 
@@ -63,50 +68,20 @@ export default function Home() {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div className="min-h-screen bg-gray-50">
       {/* Sticky Header */}
-      <div className="sticky top-0 z-50 bg-white shadow-md">
+      <div className="sticky top-0 z-50 bg-gray-50 border-b border-gray-200">
         <div className="px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="relative">
-                <svg className="w-10 h-10" viewBox="0 0 40 40" fill="none">
-                  {/* Main circle with gradient */}
-                  <defs>
-                    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#8b5cf6" />
-                      <stop offset="50%" stopColor="#3b82f6" />
-                      <stop offset="100%" stopColor="#06b6d4" />
-                    </linearGradient>
-                  </defs>
-                  <circle cx="20" cy="20" r="18" fill="url(#logoGradient)" stroke="#1d4ed8" strokeWidth="2"/>
-                  
-                  {/* AI Brain/Circuit pattern */}
-                  <circle cx="15" cy="15" r="2" fill="white" opacity="0.9"/>
-                  <circle cx="25" cy="15" r="2" fill="white" opacity="0.9"/>
-                  <circle cx="20" cy="25" r="2" fill="white" opacity="0.9"/>
-                  
-                  {/* Connecting lines */}
-                  <path d="M15 15 L25 15 L20 25 Z" stroke="white" strokeWidth="1.5" fill="none" opacity="0.7"/>
-                  
-                  {/* Fitness dumbbell icon */}
-                  <rect x="12" y="19" width="16" height="2" rx="1" fill="white"/>
-                  <rect x="11" y="17" width="2" height="6" rx="1" fill="white"/>
-                  <rect x="27" y="17" width="2" height="6" rx="1" fill="white"/>
-                  
-                  {/* Sparkle effects */}
-                  <circle cx="30" cy="12" r="1" fill="#fbbf24" opacity="0.8"/>
-                  <circle cx="32" cy="28" r="1" fill="#f59e0b" opacity="0.8"/>
-                  <circle cx="8" cy="25" r="1" fill="#10b981" opacity="0.8"/>
-                </svg>
-                {/* AI pulse effect */}
-                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-400 to-blue-400 opacity-20 animate-pulse"></div>
+              <div className="w-10 h-10 bg-black rounded-lg flex items-center justify-center">
+                <span className="text-xl">🔄</span>
               </div>
               <div>
-                <h1 className="text-xl font-black tracking-tight bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-600 bg-clip-text text-transparent font-mono">
-                  MyPT.ai
+                <h1 className="text-xl font-black tracking-tight text-black font-sans">
+                  HealthSync
                 </h1>
-                <p className="text-xs text-gray-500 -mt-1 font-medium tracking-wide">Your AI Personal Trainer</p>
+                <p className="text-xs text-gray-600 -mt-1 font-medium tracking-wide">AI-Powered Health Insights</p>
               </div>
             </div>
             {userProfile && (
@@ -115,7 +90,7 @@ export default function Home() {
                 <div className="hidden sm:flex gap-3">
                   <button
                     onClick={() => router.push("/daily-entry")}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-200 font-medium cursor-pointer flex items-center gap-2"
+                    className="px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-all duration-200 font-medium cursor-pointer flex items-center gap-2"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
@@ -124,7 +99,7 @@ export default function Home() {
                   </button>
                   <button
                     onClick={() => router.push("/profile")}
-                    className="px-4 py-2 border-2 border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition-all duration-200 font-medium cursor-pointer flex items-center gap-2"
+                    className="px-4 py-2 border-2 border-gray-400 text-gray-700 rounded-lg hover:bg-gray-100 transition-all duration-200 font-medium cursor-pointer flex items-center gap-2"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -151,7 +126,7 @@ export default function Home() {
                           router.push("/daily-entry");
                           setShowMobileMenu(false);
                         }}
-                        className="w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center gap-2"
+                        className="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center gap-2 text-gray-700"
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
@@ -163,7 +138,7 @@ export default function Home() {
                           router.push("/profile");
                           setShowMobileMenu(false);
                         }}
-                        className="w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center gap-2"
+                        className="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center gap-2 text-gray-700"
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -201,7 +176,7 @@ export default function Home() {
           <div className="flex justify-center">
             <button
               onClick={() => router.push("/sign-up")}
-              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-200 font-medium cursor-pointer"
+              className="px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-all duration-200 font-medium cursor-pointer"
             >
               Create Your Profile
             </button>

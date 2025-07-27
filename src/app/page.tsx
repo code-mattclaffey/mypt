@@ -15,35 +15,15 @@ export default function LandingPage() {
   }, [router]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-cyan-50">
+    <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="px-6 py-4">
         <div className="flex items-center gap-3">
-          <div className="relative">
-            <svg className="w-10 h-10" viewBox="0 0 40 40" fill="none">
-              <defs>
-                <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#8b5cf6" />
-                  <stop offset="50%" stopColor="#3b82f6" />
-                  <stop offset="100%" stopColor="#06b6d4" />
-                </linearGradient>
-              </defs>
-              <circle cx="20" cy="20" r="18" fill="url(#logoGradient)" stroke="#1d4ed8" strokeWidth="2"/>
-              <circle cx="15" cy="15" r="2" fill="white" opacity="0.9"/>
-              <circle cx="25" cy="15" r="2" fill="white" opacity="0.9"/>
-              <circle cx="20" cy="25" r="2" fill="white" opacity="0.9"/>
-              <path d="M15 15 L25 15 L20 25 Z" stroke="white" strokeWidth="1.5" fill="none" opacity="0.7"/>
-              <rect x="12" y="19" width="16" height="2" rx="1" fill="white"/>
-              <rect x="11" y="17" width="2" height="6" rx="1" fill="white"/>
-              <rect x="27" y="17" width="2" height="6" rx="1" fill="white"/>
-              <circle cx="30" cy="12" r="1" fill="#fbbf24" opacity="0.8"/>
-              <circle cx="32" cy="28" r="1" fill="#f59e0b" opacity="0.8"/>
-              <circle cx="8" cy="25" r="1" fill="#10b981" opacity="0.8"/>
-            </svg>
-            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-400 to-blue-400 opacity-20 animate-pulse"></div>
+          <div className="w-10 h-10 bg-black rounded-lg flex items-center justify-center">
+            <span className="text-xl">🔄</span>
           </div>
-          <h1 className="text-2xl font-black tracking-tight bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-600 bg-clip-text text-transparent font-mono">
-            MyPT.ai
+          <h1 className="text-2xl font-black tracking-tight text-black font-sans">
+            HealthSync
           </h1>
         </div>
       </header>
@@ -53,7 +33,7 @@ export default function LandingPage() {
         <div className="text-center mb-16">
           <h2 className="text-5xl md:text-6xl font-black text-gray-900 mb-6 leading-tight">
             Your AI Personal Trainer
-            <span className="block bg-gradient-to-r from-purple-600 to-cyan-600 bg-clip-text text-transparent">
+            <span className="block text-gray-700">
               That Actually Works
             </span>
           </h2>
@@ -63,7 +43,7 @@ export default function LandingPage() {
           </p>
           <button
             onClick={() => router.push('/sign-up')}
-            className="px-8 py-4 bg-gradient-to-r from-purple-600 to-cyan-600 text-white text-lg font-bold rounded-xl hover:from-purple-700 hover:to-cyan-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+            className="px-8 py-4 bg-black text-white text-lg font-bold rounded-xl hover:bg-gray-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
           >
             Start Your Journey Free
           </button>
@@ -120,7 +100,7 @@ export default function LandingPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <button
               onClick={() => router.push('/sign-up')}
-              className="px-8 py-4 bg-gradient-to-r from-purple-600 to-cyan-600 text-white text-lg font-bold rounded-xl hover:from-purple-700 hover:to-cyan-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+              className="px-8 py-4 bg-black text-white text-lg font-bold rounded-xl hover:bg-gray-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
             >
               Get Started Now
             </button>
