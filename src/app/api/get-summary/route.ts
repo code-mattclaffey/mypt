@@ -55,12 +55,12 @@ Provide a comprehensive analysis including:
 3. Motivation and encouragement
 4. Suggested daily calorie target
 5. Suggested daily step target
-6. Any goal weight adjustments if needed
+6. Only suggest increasing goal weight if current goal is unrealistic within timeframe - never suggest lowering it
 
 Respond in JSON format:
 {
   "summary": "detailed analysis and recommendations",
-  "newGoalWeight": number,
+  "newGoalWeight": number (only increase if current goal is unrealistic, never decrease),
   "recommendedCalories": number,
   "recommendedSteps": number
 }`;
@@ -92,7 +92,7 @@ Respond in JSON format:
       // Fallback if AI doesn't return valid JSON
       aiResponse = {
         summary: responseBody.content[0].text,
-        newGoalWeight: goalWeight,
+        newGoalWeight: Math.max(goalWeight, currentWeight), // Never go below current goal
         recommendedCalories: Math.round(
           2000 - (currentWeight - goalWeight) * 50
         ),
@@ -106,15 +106,9 @@ Respond in JSON format:
     return NextResponse.json(aiResponse);
   } catch (error) {
     console.error("Error in get-summary API:", error);
-
-    // Fallback to mock response if Bedrock fails
-    const mockResponse = {
-      summary: `Based on your recent activity, you're making progress toward your goal. Continue with consistent effort and healthy habits.\n\nRecommendations:\n• Maintain a balanced diet\n• Stay active with regular exercise\n• Monitor your progress weekly\n• Stay hydrated and get adequate sleep`,
-      newGoalWeight: 70,
-      recommendedCalories: 2000,
-      recommendedSteps: 10000,
-    };
-
-    return NextResponse.json(mockResponse);
+    return NextResponse.json(
+      { error: "Failed to generate AI summary" },
+      { status: 500 }
+    );
   }
 }

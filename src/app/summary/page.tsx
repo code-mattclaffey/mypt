@@ -15,6 +15,7 @@ export default function AISummaryPage() {
   const [newTargetSteps, setNewTargetSteps] = useState<number>(0);
   const [loading, setLoading] = useState(false);
   const [showSummary, setShowSummary] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
   const { getDailyTargets } = useHealthCalculations(userProfile, {});
 
@@ -90,16 +91,19 @@ export default function AISummaryPage() {
     if (savedProfile) {
       const profile = JSON.parse(savedProfile);
       setUserProfile(profile);
-    }
-
-    if (savedEntries) {
-      const entries = JSON.parse(savedEntries);
-      const sortedEntries = Object.entries(entries).sort(
-        ([a], [b]) => new Date(b).getTime() - new Date(a).getTime()
-      );
-      const latestWeight =
-        sortedEntries.length > 0 ? (sortedEntries[0][1] as any).weight : 0;
-      setCurrentWeight(latestWeight);
+      
+      if (savedEntries) {
+        const entries = JSON.parse(savedEntries);
+        const sortedEntries = Object.entries(entries).sort(
+          ([a], [b]) => new Date(b).getTime() - new Date(a).getTime()
+        );
+        const latestWeight = sortedEntries.length > 0 
+          ? (sortedEntries[0][1] as any).weight 
+          : profile.weight;
+        setCurrentWeight(latestWeight);
+      } else {
+        setCurrentWeight(profile.weight);
+      }
     }
   }, []);
 
@@ -150,10 +154,18 @@ export default function AISummaryPage() {
         setNewGoal(data.newGoalWeight || userProfile.goalWeight);
         setNewTargetCalories(data.recommendedCalories || getDailyTargets().calories);
         setNewTargetSteps(data.recommendedSteps || getDailyTargets().steps);
+        setHasError(false);
+        setShowSummary(true);
+      } else {
+        setSummary("Sorry, AI insights are temporarily unavailable. Please try again later.");
+        setHasError(true);
         setShowSummary(true);
       }
     } catch (error) {
       console.error("Failed to get AI summary:", error);
+      setSummary("Sorry, AI insights are temporarily unavailable. Please try again later.");
+      setHasError(true);
+      setShowSummary(true);
     } finally {
       setLoading(false);
     }
@@ -164,7 +176,7 @@ export default function AISummaryPage() {
 
     const updatedProfile = {
       ...userProfile,
-      goalWeight: newGoal,
+      goalWeight: Math.max(newGoal, userProfile.goalWeight),
       targetCalories: newTargetCalories,
       targetSteps: newTargetSteps,
     };
@@ -192,20 +204,23 @@ export default function AISummaryPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 p-6">
       <div className="max-w-2xl mx-auto">
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 mb-6">
+        <div className="bg-white/5 backdrop-blur-sm rounded-2xl shadow-lg border border-white/10 mb-6">
           <div className="p-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-black rounded-lg flex items-center justify-center">
-                  <span className="text-xl">🔄</span>
-                </div>
-                <h1 className="text-2xl font-bold text-gray-800">AI Insights</h1>
+                <svg className="w-8 h-8" viewBox="0 0 32 32" fill="none">
+                  <circle cx="16" cy="16" r="14" fill="#3b82f6" stroke="#1d4ed8" strokeWidth="2"/>
+                  <path d="M12 8v16l8-8-8-8z" fill="white"/>
+                  <circle cx="22" cy="10" r="3" fill="#10b981"/>
+                  <circle cx="10" cy="22" r="3" fill="#f59e0b"/>
+                </svg>
+                <h1 className="text-2xl font-bold text-slate-100">AI Insights</h1>
               </div>
               <button
                 onClick={() => router.back()}
-                className="px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-all duration-200 font-medium cursor-pointer"
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-200 font-medium cursor-pointer"
               >
                 Back
               </button>
@@ -213,27 +228,27 @@ export default function AISummaryPage() {
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 mb-6">
+        <div className="bg-white/5 backdrop-blur-sm rounded-2xl shadow-lg border border-white/10 mb-6">
           <div className="p-6">
-            <h2 className="text-xl font-bold text-gray-800 mb-4">
+            <h2 className="text-xl font-bold text-slate-100 mb-4">
               Weight Progress Analysis
             </h2>
             <div className="grid grid-cols-3 gap-4 mb-4">
-              <div className="bg-gray-50 rounded-lg p-4">
-                <h3 className="font-semibold text-gray-700">Start Weight</h3>
-                <p className="text-xl font-bold text-gray-600">
+              <div className="bg-white/10 rounded-lg p-4">
+                <h3 className="font-semibold text-slate-300">Start Weight</h3>
+                <p className="text-xl font-bold text-slate-100">
                   {userProfile.weight}kg
                 </p>
               </div>
-              <div className="bg-blue-50 rounded-lg p-4">
-                <h3 className="font-semibold text-gray-700">Current Weight</h3>
-                <p className="text-xl font-bold text-blue-600">
+              <div className="bg-blue-500/20 rounded-lg p-4">
+                <h3 className="font-semibold text-blue-200">Current Weight</h3>
+                <p className="text-xl font-bold text-blue-100">
                   {currentWeight}kg
                 </p>
               </div>
-              <div className="bg-purple-50 rounded-lg p-4">
-                <h3 className="font-semibold text-gray-700">Goal Weight</h3>
-                <p className="text-xl font-bold text-purple-600">
+              <div className="bg-purple-500/20 rounded-lg p-4">
+                <h3 className="font-semibold text-purple-200">Goal Weight</h3>
+                <p className="text-xl font-bold text-purple-100">
                   {userProfile.goalWeight}kg
                 </p>
               </div>
@@ -242,42 +257,42 @@ export default function AISummaryPage() {
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-100">
+        <div className="bg-white/5 backdrop-blur-sm rounded-2xl shadow-lg border border-white/10">
           <div className="p-6">
             {!showSummary ? (
               <div className="text-center">
-                <h2 className="text-xl font-bold text-gray-800 mb-4">
+                <h2 className="text-xl font-bold text-slate-100 mb-4">
                   Get AI Insights
                 </h2>
-                <p className="text-gray-600 mb-6">
+                <p className="text-slate-300 mb-6">
                   Let our AI analyze your progress and suggest personalized goal
                   adjustments
                 </p>
                 <button
                   onClick={handleGetSummary}
                   disabled={loading}
-                  className="px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-all duration-200 font-medium cursor-pointer disabled:opacity-50"
+                  className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-200 font-medium cursor-pointer disabled:opacity-50"
                 >
                   {loading ? "Analyzing..." : "Get AI Insights"}
                 </button>
               </div>
             ) : (
               <div>
-                <h2 className="text-xl font-bold text-gray-800 mb-4">
+                <h2 className="text-xl font-bold text-slate-100 mb-4">
                   AI Recommendations
                 </h2>
-                <div className="bg-gradient-to-r from-purple-50 to-cyan-50 border border-purple-200 rounded-lg p-4 mb-4">
-                  <p className="text-gray-700 whitespace-pre-wrap">{summary}</p>
+                <div className="bg-gradient-to-r from-purple-500/20 to-cyan-500/20 border border-purple-500/30 rounded-lg p-4 mb-4">
+                  <p className="text-slate-200 whitespace-pre-wrap">{summary}</p>
                 </div>
-                {(newGoal !== userProfile.goalWeight ||
+                {!hasError && (newGoal > userProfile.goalWeight ||
                   newTargetCalories !== (userProfile.targetCalories || 0) ||
                   newTargetSteps !== (userProfile.targetSteps || 0)) && (
-                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
-                    <h3 className="font-semibold text-yellow-800 mb-2">
+                  <div className="bg-yellow-500/20 border border-yellow-500/30 rounded-lg p-4 mb-4">
+                    <h3 className="font-semibold text-yellow-200 mb-2">
                       Suggested Updates
                     </h3>
-                    {newGoal !== userProfile.goalWeight && (
-                      <p className="text-yellow-700 mb-1">
+                    {newGoal > userProfile.goalWeight && (
+                      <p className="text-yellow-100 mb-1">
                         New goal weight:{" "}
                         <span className="font-bold">{newGoal}kg</span> (was{" "}
                         {userProfile.goalWeight}kg)
@@ -285,14 +300,14 @@ export default function AISummaryPage() {
                     )}
                     {newTargetCalories !==
                       (userProfile.targetCalories || 0) && (
-                      <p className="text-yellow-700 mb-1">
+                      <p className="text-yellow-100 mb-1">
                         New target calories:{" "}
                         <span className="font-bold">{newTargetCalories}</span>{" "}
                         (was {userProfile.targetCalories || "not set"})
                       </p>
                     )}
                     {newTargetSteps !== (userProfile.targetSteps || 0) && (
-                      <p className="text-yellow-700">
+                      <p className="text-yellow-100">
                         New target steps:{" "}
                         <span className="font-bold">{newTargetSteps}</span> (was{" "}
                         {userProfile.targetSteps || "not set"})
@@ -300,20 +315,30 @@ export default function AISummaryPage() {
                     )}
                   </div>
                 )}
-                <div className="flex gap-4">
+                {!hasError && (
+                  <div className="flex gap-4">
+                    <button
+                      onClick={() => setShowSummary(false)}
+                      className="flex-1 px-6 py-3 border-2 border-slate-600 text-slate-300 rounded-lg hover:bg-slate-800 transition-colors duration-200 font-medium cursor-pointer"
+                    >
+                      Get New Summary
+                    </button>
+                    <button
+                      onClick={handleAcceptChanges}
+                      className="flex-1 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium cursor-pointer"
+                    >
+                      Accept Changes
+                    </button>
+                  </div>
+                )}
+                {hasError && (
                   <button
                     onClick={() => setShowSummary(false)}
-                    className="flex-1 px-6 py-3 border-2 border-black text-black rounded-lg hover:bg-gray-100 transition-colors duration-200 font-medium cursor-pointer"
+                    className="w-full px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium cursor-pointer"
                   >
-                    Get New Summary
+                    Try Again
                   </button>
-                  <button
-                    onClick={handleAcceptChanges}
-                    className="flex-1 px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors duration-200 font-medium cursor-pointer"
-                  >
-                    Accept Changes
-                  </button>
-                </div>
+                )}
               </div>
             )}
           </div>
