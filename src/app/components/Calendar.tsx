@@ -4,6 +4,142 @@ import { useState } from 'react';
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isToday } from 'date-fns';
 import { DailyEntry, UserProfile } from '../types';
 
+interface MobileCalendarProps {
+  entries: Record<string, DailyEntry>;
+  onDateSelect: (date: Date) => void;
+  userProfile?: UserProfile;
+}
+
+function MobileCalendar({ entries, onDateSelect, userProfile }: MobileCalendarProps) {
+  const [showPastEntries, setShowPastEntries] = useState(false);
+  const today = new Date();
+  const todayKey = format(today, 'yyyy-MM-dd');
+  const hasEntryToday = entries[todayKey] !== undefined;
+
+  const pastEntries = Object.entries(entries)
+    .sort(([a], [b]) => new Date(b).getTime() - new Date(a).getTime())
+    .slice(0, 10); // Show last 10 entries
+
+  const getDayStatus = (date: Date) => {
+    if (!userProfile || !entries[format(date, 'yyyy-MM-dd')]) return 'none';
+    const dateKey = format(date, 'yyyy-MM-dd');
+    const entry = entries[dateKey];
+    
+    const targets = {
+      calories: userProfile.targetCalories || 2000,
+      steps: userProfile.targetSteps || 8000
+    };
+    const caloriesDiff = entry.calories - targets.calories;
+    const stepsDiff = targets.steps - entry.steps;
+    
+    if (caloriesDiff >= 500 || stepsDiff >= 5000) return 'red';
+    if (caloriesDiff >= 200 || stepsDiff >= 2000) return 'orange';
+    return 'green';
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'green': return 'bg-green-500';
+      case 'orange': return 'bg-orange-500';
+      case 'red': return 'bg-red-500';
+      default: return 'bg-gray-300';
+    }
+  };
+
+  if (showPastEntries) {
+    return (
+      <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+        <div className="p-4 border-b border-gray-100">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-bold text-gray-800">Past Entries</h2>
+            <button
+              onClick={() => setShowPastEntries(false)}
+              className="text-blue-600 font-medium"
+            >
+              Back to Today
+            </button>
+          </div>
+        </div>
+        <div className="max-h-96 overflow-y-auto">
+          {pastEntries.length > 0 ? (
+            pastEntries.map(([dateKey, entry]) => {
+              const date = new Date(dateKey);
+              const status = getDayStatus(date);
+              return (
+                <button
+                  key={dateKey}
+                  onClick={() => onDateSelect(date)}
+                  className="w-full p-4 border-b border-gray-50 hover:bg-gray-50 text-left"
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className="font-medium text-gray-900">
+                        {format(date, 'EEEE, MMM d')}
+                      </div>
+                      <div className="text-sm text-gray-500 mt-1">
+                        {entry.calories} cal • {entry.steps.toLocaleString()} steps • {entry.weight}kg
+                      </div>
+                    </div>
+                    <div className={`w-3 h-3 rounded-full ${getStatusColor(status)}`}></div>
+                  </div>
+                </button>
+              );
+            })
+          ) : (
+            <div className="p-8 text-center text-gray-500">
+              No entries yet. Start tracking your health!
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+      <div className="p-6">
+        <h2 className="text-xl font-bold text-gray-800 mb-6 text-center">
+          {format(today, 'EEEE, MMMM d')}
+        </h2>
+        
+        <div className="space-y-4">
+          {hasEntryToday ? (
+            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <div className={`w-3 h-3 rounded-full ${getStatusColor(getDayStatus(today))}`}></div>
+                <span className="font-medium text-green-800">Entry Completed</span>
+              </div>
+              <div className="text-sm text-green-700">
+                {entries[todayKey].calories} cal • {entries[todayKey].steps.toLocaleString()} steps • {entries[todayKey].weight}kg
+              </div>
+              <button
+                onClick={() => onDateSelect(today)}
+                className="mt-3 w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
+              >
+                Edit Today's Entry
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => onDateSelect(today)}
+              className="w-full px-6 py-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-lg"
+            >
+              Add Today's Entry
+            </button>
+          )}
+          
+          <button
+            onClick={() => setShowPastEntries(true)}
+            className="w-full px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+          >
+            View Past Entries ({pastEntries.length})
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 interface CalendarProps {
   entries: Record<string, DailyEntry>;
   onDateSelect: (date: Date) => void;
@@ -13,6 +149,19 @@ interface CalendarProps {
 
 export default function Calendar({ entries, onDateSelect, targetDate, userProfile }: CalendarProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [isMobile, setIsMobile] = useState(false);
+  
+  useState(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  });
+  
+  // Show mobile version on small screens
+  if (isMobile) {
+    return <MobileCalendar entries={entries} onDateSelect={onDateSelect} userProfile={userProfile} />;
+  }
   
   const monthStart = startOfMonth(currentDate);
   const monthEnd = endOfMonth(currentDate);
@@ -101,7 +250,7 @@ export default function Calendar({ entries, onDateSelect, targetDate, userProfil
           ))}
         </div>
         
-        <div className="grid grid-cols-7 gap-2">
+        <div className="grid grid-cols-7 gap-1 sm:gap-2">
           {days.map(day => {
             const entry = entries[format(day, 'yyyy-MM-dd')];
             const dayStatus = getDayStatus(day);
@@ -110,7 +259,7 @@ export default function Calendar({ entries, onDateSelect, targetDate, userProfil
                 key={day.toISOString()}
                 onClick={() => onDateSelect(day)}
                 className={`
-                  h-32 rounded-lg text-sm font-medium transition-all duration-200 relative p-2 flex flex-col cursor-pointer
+                  h-20 sm:h-32 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 relative p-1 sm:p-2 flex flex-col cursor-pointer
                   ${!isSameMonth(day, currentDate) 
                     ? 'text-gray-300 hover:text-gray-400' 
                     : 'text-gray-700 hover:bg-gray-50'
@@ -163,7 +312,7 @@ export default function Calendar({ entries, onDateSelect, targetDate, userProfil
                   </div>
                 </div>
                 {entry && (
-                  <div className="text-xs mt-1 space-y-0.5 text-left">
+                  <div className="text-xs mt-1 space-y-0.5 text-left hidden sm:block">
                     <div>😊 {entry.mood}/5 ⚡ {entry.energy}/5</div>
                     <div>{entry.calories} cal</div>
                     <div>{entry.steps.toLocaleString()} steps</div>
