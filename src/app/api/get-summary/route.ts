@@ -38,7 +38,7 @@ User Profile:
 - Activity Level: ${activityLevel}/5
 - Target Date: ${targetDate}
 
-Recent Activity Data:
+Recent Activity Data (focus on the last 7 days for analysis):
 ${JSON.stringify(entries, null, 2)}
 
 Progress Summary:
@@ -49,8 +49,8 @@ Progress Summary:
         (1000 * 60 * 60 * 24)
     )}
 
-Provide a comprehensive analysis including:
-1. Progress assessment
+Provide a comprehensive analysis focusing primarily on the most recent 7 days of data including:
+1. Progress assessment based on recent activity
 2. Specific recommendations for diet and exercise
 3. Motivation and encouragement
 4. Suggested daily calorie target

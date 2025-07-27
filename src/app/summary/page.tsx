@@ -112,20 +112,20 @@ export default function AISummaryPage() {
 
     setLoading(true);
     try {
-      // Get all entries for the coming week
+      // Get all entries for analysis
       const savedEntries = localStorage.getItem("healthAssistant_entries");
       const allEntries = savedEntries ? JSON.parse(savedEntries) : {};
 
       const today = new Date();
-      const weekEntries: Record<string, any> = {};
+      const recentEntries: Record<string, any> = {};
 
-      // Get entries for the next 7 days
-      for (let i = 0; i < 7; i++) {
+      // Get entries from the past 30 days for better analysis
+      for (let i = -30; i <= 0; i++) {
         const date = new Date(today);
         date.setDate(today.getDate() + i);
         const dateKey = date.toISOString().split("T")[0];
         if (allEntries[dateKey]) {
-          weekEntries[dateKey] = allEntries[dateKey];
+          recentEntries[dateKey] = allEntries[dateKey];
         }
       }
 
@@ -135,7 +135,7 @@ export default function AISummaryPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          entries: weekEntries,
+          entries: recentEntries,
           weekStart: today.toISOString().split("T")[0],
           currentWeight,
           goalWeight: userProfile.goalWeight,
