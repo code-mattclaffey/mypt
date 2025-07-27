@@ -68,20 +68,20 @@ export default function Home() {
 
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900">
       {/* Sticky Header */}
-      <div className="sticky top-0 z-50 bg-gray-50 border-b border-gray-200">
+      <div className="sticky top-0 z-50 bg-slate-900/80 backdrop-blur-sm border-b border-slate-700">
         <div className="px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-black rounded-lg flex items-center justify-center">
+              <div className="w-10 h-10 bg-gradient-to-r from-blue-400 to-purple-500 rounded-lg flex items-center justify-center">
                 <span className="text-xl">🔄</span>
               </div>
               <div>
-                <h1 className="text-xl font-black tracking-tight text-black font-sans">
+                <h1 className="text-xl font-black tracking-tight text-slate-100 font-sans">
                   HealthSync
                 </h1>
-                <p className="text-xs text-gray-600 -mt-1 font-medium tracking-wide">AI-Powered Health Insights</p>
+                <p className="text-xs text-slate-400 -mt-1 font-medium tracking-wide">AI-Powered Health Insights</p>
               </div>
             </div>
             {userProfile && (
@@ -120,13 +120,13 @@ export default function Home() {
                   </button>
                   
                   {showMobileMenu && (
-                    <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 py-2">
+                    <div className="absolute right-0 top-full mt-2 w-48 bg-slate-800 rounded-lg shadow-lg border border-slate-700 py-2">
                       <button
                         onClick={() => {
                           router.push("/daily-entry");
                           setShowMobileMenu(false);
                         }}
-                        className="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center gap-2 text-gray-700"
+                        className="w-full px-4 py-2 text-left hover:bg-slate-700 flex items-center gap-2 text-slate-300"
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
@@ -138,7 +138,7 @@ export default function Home() {
                           router.push("/profile");
                           setShowMobileMenu(false);
                         }}
-                        className="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center gap-2 text-gray-700"
+                        className="w-full px-4 py-2 text-left hover:bg-slate-700 flex items-center gap-2 text-slate-300"
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -176,7 +176,7 @@ export default function Home() {
           <div className="flex justify-center">
             <button
               onClick={() => router.push("/sign-up")}
-              className="px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-all duration-200 font-medium cursor-pointer"
+              className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-200 font-medium cursor-pointer"
             >
               Create Your Profile
             </button>

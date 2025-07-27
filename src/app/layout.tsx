@@ -38,7 +38,7 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#3b82f6" />
       </head>
-      <body className="antialiased">
+      <body className="antialiased bg-gray-900 text-white">
         {children}
       </body>
     </html>
