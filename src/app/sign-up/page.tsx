@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function SignUpPage() {
@@ -13,6 +13,21 @@ export default function SignUpPage() {
     goalWeight: 65,
     targetDate: ''
   });
+
+  useEffect(() => {
+    const savedProfile = localStorage.getItem('healthAssistant_profile');
+    if (savedProfile) {
+      const profile = JSON.parse(savedProfile);
+      setFormData({
+        height: profile.height || 170,
+        sex: profile.sex || 'male',
+        weight: profile.weight || 70,
+        activityLevel: profile.activityLevel || 3,
+        goalWeight: profile.goalWeight || 65,
+        targetDate: profile.targetDate || ''
+      });
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -64,21 +79,19 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 p-6">
       <div className="max-w-2xl mx-auto">
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-100">
+        <div className="bg-white/5 backdrop-blur-sm rounded-2xl shadow-lg border border-white/10">
           <div className="p-8">
             <div className="text-center mb-8">
-              <div className="w-16 h-16 bg-black rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-3xl">🔄</span>
-              </div>
-              <h2 className="text-2xl font-bold text-gray-800 mb-2">Create Your Profile</h2>
-              <p className="text-gray-600">Set up your health tracking preferences</p>
+              <span className="text-5xl block mb-4">🔄</span>
+              <h2 className="text-2xl font-bold text-slate-100 mb-2">Create Your Profile</h2>
+              <p className="text-slate-300">Set up your health tracking preferences</p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label htmlFor="height" className="block text-sm font-semibold text-gray-700 mb-2">
+                <label htmlFor="height" className="block text-sm font-semibold text-slate-200 mb-2">
                   Height (cm)
                 </label>
                 <input
@@ -86,7 +99,7 @@ export default function SignUpPage() {
                   type="number"
                   value={formData.height}
                   onChange={(e) => setFormData({...formData, height: parseInt(e.target.value) || 0})}
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 bg-white"
+                  className="w-full px-4 py-3 border-2 border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white/10 text-slate-100 placeholder-slate-400"
                   min="100"
                   max="250"
                   placeholder="Enter your height"
@@ -95,14 +108,14 @@ export default function SignUpPage() {
               </div>
 
               <div>
-                <label htmlFor="sex" className="block text-sm font-semibold text-gray-700 mb-2">
+                <label htmlFor="sex" className="block text-sm font-semibold text-slate-200 mb-2">
                   Sex
                 </label>
                 <select
                   id="sex"
                   value={formData.sex}
                   onChange={(e) => setFormData({...formData, sex: e.target.value as 'male' | 'female'})}
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 bg-white"
+                  className="w-full px-4 py-3 border-2 border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white/10 text-slate-100"
                   required
                 >
                   <option value="male">Male</option>
@@ -111,7 +124,7 @@ export default function SignUpPage() {
               </div>
 
               <div>
-                <label htmlFor="weight" className="block text-sm font-semibold text-gray-700 mb-2">
+                <label htmlFor="weight" className="block text-sm font-semibold text-slate-200 mb-2">
                   Weight (kg)
                 </label>
                 <input
@@ -120,7 +133,7 @@ export default function SignUpPage() {
                   step="0.1"
                   value={formData.weight}
                   onChange={(e) => setFormData({...formData, weight: parseFloat(e.target.value) || 0})}
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 bg-white"
+                  className="w-full px-4 py-3 border-2 border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white/10 text-slate-100 placeholder-slate-400"
                   min="30"
                   max="300"
                   placeholder="Enter your weight"
@@ -129,7 +142,7 @@ export default function SignUpPage() {
               </div>
 
               <div>
-                <label htmlFor="goalWeight" className="block text-sm font-semibold text-gray-700 mb-2">
+                <label htmlFor="goalWeight" className="block text-sm font-semibold text-slate-200 mb-2">
                   Goal Weight (kg)
                 </label>
                 <input
@@ -138,7 +151,7 @@ export default function SignUpPage() {
                   step="0.1"
                   value={formData.goalWeight}
                   onChange={(e) => setFormData({...formData, goalWeight: parseFloat(e.target.value) || 0})}
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 bg-white"
+                  className="w-full px-4 py-3 border-2 border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white/10 text-slate-100 placeholder-slate-400"
                   min="30"
                   max="300"
                   placeholder="Enter your goal weight"
@@ -147,7 +160,7 @@ export default function SignUpPage() {
               </div>
 
               <div>
-                <label htmlFor="targetDate" className="block text-sm font-semibold text-gray-700 mb-2">
+                <label htmlFor="targetDate" className="block text-sm font-semibold text-slate-200 mb-2">
                   Target Date
                 </label>
                 <input
@@ -155,14 +168,14 @@ export default function SignUpPage() {
                   type="date"
                   value={formData.targetDate}
                   onChange={(e) => setFormData({...formData, targetDate: e.target.value})}
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 bg-white"
+                  className="w-full px-4 py-3 border-2 border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white/10 text-slate-100"
                   min={new Date().toISOString().split('T')[0]}
                   required
                 />
               </div>
 
               <div>
-                <label htmlFor="activity" className="block text-sm font-semibold text-gray-700 mb-3">
+                <label htmlFor="activity" className="block text-sm font-semibold text-slate-200 mb-3">
                   Activity Level
                 </label>
                 <input
@@ -172,24 +185,24 @@ export default function SignUpPage() {
                   max="5"
                   value={formData.activityLevel}
                   onChange={(e) => setFormData({...formData, activityLevel: (parseInt(e.target.value) || 1) as 1 | 2 | 3 | 4 | 5})}
-                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                  className="w-full h-2 bg-white/20 rounded-lg appearance-none cursor-pointer"
                   step="1"
                 />
-                <div className="flex justify-between text-xs text-gray-500 mt-2 px-1">
+                <div className="flex justify-between text-xs text-slate-400 mt-2 px-1">
                   <span>1</span>
                   <span>2</span>
                   <span>3</span>
                   <span>4</span>
                   <span>5</span>
                 </div>
-                <div className="text-center mt-2 text-sm font-medium text-black">
+                <div className="text-center mt-2 text-sm font-medium text-slate-100 bg-white/10 rounded px-2 py-1">
                   {activityLabels[formData.activityLevel]}
                 </div>
               </div>
 
               <button 
                 type="submit"
-                className="w-full px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors duration-200 font-medium shadow-lg cursor-pointer"
+                className="w-full px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium shadow-lg cursor-pointer"
               >
                 Create Profile
               </button>

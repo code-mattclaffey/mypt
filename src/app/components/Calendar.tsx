@@ -48,13 +48,13 @@ function MobileCalendar({ entries, onDateSelect, userProfile }: MobileCalendarPr
 
   if (showPastEntries) {
     return (
-      <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-        <div className="p-4 border-b border-gray-100">
+      <div className="bg-white/5 backdrop-blur-sm rounded-2xl shadow-lg border border-white/10 overflow-hidden">
+        <div className="p-4 border-b border-white/10">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-bold text-gray-800">Past Entries</h2>
+            <h2 className="text-lg font-bold text-slate-100">Past Entries</h2>
             <button
               onClick={() => setShowPastEntries(false)}
-              className="text-blue-600 font-medium"
+              className="text-blue-400 font-medium"
             >
               Back to Today
             </button>
@@ -69,14 +69,14 @@ function MobileCalendar({ entries, onDateSelect, userProfile }: MobileCalendarPr
                 <button
                   key={dateKey}
                   onClick={() => onDateSelect(date)}
-                  className="w-full p-4 border-b border-gray-50 hover:bg-gray-50 text-left"
+                  className="w-full p-4 border-b border-white/10 hover:bg-white/10 text-left"
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="font-medium text-gray-900">
+                      <div className="font-medium text-slate-100">
                         {format(date, 'EEEE, MMM d')}
                       </div>
-                      <div className="text-sm text-gray-500 mt-1">
+                      <div className="text-sm text-slate-400 mt-1">
                         {entry.calories} cal • {entry.steps.toLocaleString()} steps • {entry.weight}kg
                       </div>
                     </div>
@@ -86,7 +86,7 @@ function MobileCalendar({ entries, onDateSelect, userProfile }: MobileCalendarPr
               );
             })
           ) : (
-            <div className="p-8 text-center text-gray-500">
+            <div className="p-8 text-center text-slate-400">
               No entries yet. Start tracking your health!
             </div>
           )}
@@ -96,25 +96,21 @@ function MobileCalendar({ entries, onDateSelect, userProfile }: MobileCalendarPr
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-      <div className="p-6">
-        <h2 className="text-xl font-bold text-gray-800 mb-6 text-center">
-          {format(today, 'EEEE, MMMM d')}
-        </h2>
-        
+    <div className="bg-white/5 backdrop-blur-sm rounded-2xl shadow-lg border border-white/10 overflow-hidden">
+      <div className="p-4">
         <div className="space-y-4">
           {hasEntryToday ? (
-            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+            <div className="bg-green-500/20 border border-green-500/30 rounded-lg p-4">
               <div className="flex items-center gap-2 mb-2">
                 <div className={`w-3 h-3 rounded-full ${getStatusColor(getDayStatus(today))}`}></div>
-                <span className="font-medium text-green-800">Entry Completed</span>
+                <span className="font-medium text-green-200">Entry Completed</span>
               </div>
-              <div className="text-sm text-green-700">
+              <div className="text-sm text-green-300">
                 {entries[todayKey].calories} cal • {entries[todayKey].steps.toLocaleString()} steps • {entries[todayKey].weight}kg
               </div>
               <button
                 onClick={() => onDateSelect(today)}
-                className="mt-3 w-full px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors font-medium"
+                className="mt-3 w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
               >
                 Edit Today's Entry
               </button>
@@ -122,15 +118,19 @@ function MobileCalendar({ entries, onDateSelect, userProfile }: MobileCalendarPr
           ) : (
             <button
               onClick={() => onDateSelect(today)}
-              className="w-full px-6 py-4 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors font-medium text-lg"
+              className="w-full px-6 py-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-lg"
             >
               Add Today's Entry
             </button>
           )}
           
+          <h2 className="text-lg font-bold text-slate-100 text-center py-2">
+            {format(today, 'EEEE, MMMM d')}
+          </h2>
+          
           <button
             onClick={() => setShowPastEntries(true)}
-            className="w-full px-6 py-3 border-2 border-black text-black rounded-lg hover:bg-gray-100 transition-colors font-medium"
+            className="w-full px-6 py-3 border-2 border-white text-white rounded-lg hover:bg-white/10 transition-colors font-medium"
           >
             View Past Entries ({pastEntries.length})
           </button>
@@ -218,22 +218,22 @@ export default function Calendar({ entries, onDateSelect, targetDate, userProfil
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+    <div className="bg-white/5 backdrop-blur-sm rounded-2xl shadow-lg border border-white/10 overflow-hidden">
       <div className="p-6">
         <div className="flex justify-between items-center mb-6">
           <button 
-            className="w-10 h-10 rounded-full border-2 border-gray-200 hover:border-primary-500 hover:bg-primary-50 transition-all duration-200 flex items-center justify-center text-gray-600 hover:text-primary-600 cursor-pointer"
+            className="w-10 h-10 rounded-full border-2 border-white/20 hover:border-blue-500 hover:bg-blue-500/20 transition-all duration-200 flex items-center justify-center text-slate-400 hover:text-blue-400 cursor-pointer"
             onClick={() => navigateMonth('prev')}
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
-          <h2 className="text-2xl font-bold text-gray-800">
+          <h2 className="text-2xl font-bold text-slate-100">
             {format(currentDate, 'MMMM yyyy')}
           </h2>
           <button 
-            className="w-10 h-10 rounded-full border-2 border-gray-200 hover:border-primary-500 hover:bg-primary-50 transition-all duration-200 flex items-center justify-center text-gray-600 hover:text-primary-600 cursor-pointer"
+            className="w-10 h-10 rounded-full border-2 border-white/20 hover:border-blue-500 hover:bg-blue-500/20 transition-all duration-200 flex items-center justify-center text-slate-400 hover:text-blue-400 cursor-pointer"
             onClick={() => navigateMonth('next')}
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -244,7 +244,7 @@ export default function Calendar({ entries, onDateSelect, targetDate, userProfil
         
         <div className="grid grid-cols-7 gap-1 mb-3">
           {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-            <div key={day} className="text-center font-semibold text-gray-500 text-sm py-2">
+            <div key={day} className="text-center font-semibold text-slate-400 text-sm py-2">
               {day}
             </div>
           ))}
@@ -261,23 +261,23 @@ export default function Calendar({ entries, onDateSelect, targetDate, userProfil
                 className={`
                   h-20 sm:h-32 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 relative p-1 sm:p-2 flex flex-col cursor-pointer
                   ${!isSameMonth(day, currentDate) 
-                    ? 'text-gray-300 hover:text-gray-400' 
-                    : 'text-gray-700 hover:bg-gray-50'
+                    ? 'text-slate-500 hover:text-slate-400' 
+                    : 'text-slate-200 hover:bg-white/10 bg-white/5'
                   }
                   ${isToday(day) && !hasEntry(day)
-                    ? 'border-2 border-black text-black bg-gray-100 hover:bg-gray-200' 
+                    ? 'border-2 border-blue-500 text-blue-400 bg-blue-500/20 hover:bg-blue-500/30' 
                     : ''
                   }
                   ${dayStatus === 'green' && !isTargetDate(day)
-                    ? 'bg-green-600 text-white hover:bg-green-700 shadow-sm' 
+                    ? 'bg-green-500/30 text-green-200 hover:bg-green-500/40 shadow-sm border border-green-500/50' 
                     : ''
                   }
                   ${dayStatus === 'orange' && !isTargetDate(day)
-                    ? 'bg-orange-500 text-white hover:bg-orange-600 shadow-sm' 
+                    ? 'bg-orange-500/30 text-orange-200 hover:bg-orange-500/40 shadow-sm border border-orange-500/50' 
                     : ''
                   }
                   ${dayStatus === 'red' && !isTargetDate(day)
-                    ? 'bg-red-600 text-white hover:bg-red-700 shadow-sm' 
+                    ? 'bg-red-500/30 text-red-200 hover:bg-red-500/40 shadow-sm border border-red-500/50' 
                     : ''
                   }
                   ${isTargetDate(day) && !isToday(day)

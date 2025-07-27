@@ -74,9 +74,7 @@ export default function Home() {
         <div className="px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-r from-blue-400 to-purple-500 rounded-lg flex items-center justify-center">
-                <span className="text-xl">🔄</span>
-              </div>
+              <span className="text-3xl">🔄</span>
               <div>
                 <h1 className="text-xl font-black tracking-tight text-slate-100 font-sans">
                   HealthSync
@@ -90,7 +88,7 @@ export default function Home() {
                 <div className="hidden sm:flex gap-3">
                   <button
                     onClick={() => router.push("/daily-entry")}
-                    className="px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-all duration-200 font-medium cursor-pointer flex items-center gap-2"
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-200 font-medium cursor-pointer flex items-center gap-2"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
@@ -99,7 +97,7 @@ export default function Home() {
                   </button>
                   <button
                     onClick={() => router.push("/profile")}
-                    className="px-4 py-2 border-2 border-gray-400 text-gray-700 rounded-lg hover:bg-gray-100 transition-all duration-200 font-medium cursor-pointer flex items-center gap-2"
+                    className="px-4 py-2 border-2 border-slate-600 text-slate-300 rounded-lg hover:bg-slate-800 transition-all duration-200 font-medium cursor-pointer flex items-center gap-2"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -112,7 +110,7 @@ export default function Home() {
                 <div className="sm:hidden relative">
                   <button
                     onClick={() => setShowMobileMenu(!showMobileMenu)}
-                    className="p-2 text-gray-600 hover:text-gray-800 cursor-pointer"
+                    className="p-2 text-slate-400 hover:text-slate-200 cursor-pointer"
                   >
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
@@ -158,8 +156,12 @@ export default function Home() {
       <div className="p-6 space-y-6">
 
         {userProfile ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <UserProfileCard userProfile={userProfile} />
+          <div className={`grid grid-cols-1 gap-4 ${new Date().getDay() === 0 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
+            {new Date().getDay() === 0 && (
+              <AISummaryCard onClick={() => router.push('/summary')} />
+            )}
+            
+            <UserProfileCard userProfile={userProfile} onEditProfile={() => router.push("/profile")} />
             
             <GoalProgressCard
               key={`${userProfile.goalWeight}-${userProfile.targetCalories}-${userProfile.targetSteps}`}
@@ -168,15 +170,14 @@ export default function Home() {
               currentWeight={getLatestWeight()}
               goalWeight={userProfile.goalWeight}
               dailyTargets={getDailyTargets()}
+              onDailyEntry={() => router.push(`/daily-entry?date=${format(new Date(), 'yyyy-MM-dd')}`)}
             />
-            
-            <AISummaryCard onClick={() => router.push('/summary')} />
           </div>
         ) : (
           <div className="flex justify-center">
             <button
               onClick={() => router.push("/sign-up")}
-              className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-200 font-medium cursor-pointer"
+              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-200 font-medium cursor-pointer"
             >
               Create Your Profile
             </button>
